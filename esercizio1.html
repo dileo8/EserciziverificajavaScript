@@ -1,0 +1,93 @@
+<html>
+    <meta charset = "UTF-8">
+    <body>
+        <form id = "form">
+            <style>
+                th, td, table{
+                    border: 1px solid black;
+                }
+            </style>
+            <table>
+                <tr>
+                    <td>codice prenotazione</td>
+                    <td><input type = "text" id = "codice"></td>
+                </tr>
+                <tr>
+                    <td>numero di biglietti</td>
+                    <td><input type = "number" id = "numeroBiglietti" min = 0 max = 1000></td>
+                </tr>
+                <tr>
+                    <td><button type = "button" onclick = "aggiungiPrenotazione()">Aggiungi</button></td>
+                    <td><button type = "button" onclick = "mostraPrenotazione()">Mostra prenotazioni</button></td>
+                </tr>
+            </table>
+        </form>
+        <div id="risultato"></div>
+    </body>
+    <script>
+        let clienti = [];
+
+        function aggiungiPrenotazione(){
+            const codice = document.getElementById("codice").value
+            const numeroBiglietti = document.getElementById("numeroBiglietti").value
+
+            let costoBiglietto = 20
+            //controllo sul numero di biglietti
+            if(numeroBiglietti < 1 || isNaN(numeroBiglietti))
+                alert("ERRORE, numero di biglietti non valido!")
+            //controllo sul codice cliente
+            else if(codice == "")
+                alert("ERRORE, nell'inserimento del codice!")
+            else
+                calcoloImporto(numeroBiglietti, costoBiglietto)
+    
+            //aggiunta dei dati nell'array
+            clienti.push({numeroBiglietti: numeroBiglietti, codice: codice, importototale: importoTotale});
+            //azzero i valori
+            document.getElementById("codice").value = ""
+            document.getElementById("numeroBiglietti").value = ""
+        }
+
+        //calcolo l'importo
+        function calcoloImporto(numeroBiglietti, costoBiglietto){
+            if(numeroBiglietti < 1 || numeroBiglietti == "")
+                importoTotale = 0
+            else if(numeroBiglietti <= 4 && numeroBiglietti >= 1)
+                importoTotale = costoBiglietto
+            else if(numeroBiglietti <= 9 && numeroBiglietti >= 5)
+                importoTotale = (costoBiglietto*numeroBiglietti)- (costoBiglietto*numeroBiglietti*0.10)
+            else if(numeroBiglietti >= 10)
+                importoTotale = (costoBiglietto*numeroBiglietti)- (costoBiglietto*numeroBiglietti*0.20)
+        }
+    
+        function mostraPrenotazione(){
+            let tabella = `<table>
+                            <tr>
+                            <td>Codice cliente</td>
+                            <td>Numero dei biglietti</td>
+                            <td>Importo totale</td>
+                            </tr>
+                            `
+                
+                for(let cliente of clienti){
+                    if(codice != "" || isNaN(numeroBiglietti) || numeroBiglietti < 0){
+                        var riga = `<tr>
+                                <td>${cliente.codice}</td>
+                                <td>${cliente.numeroBiglietti}</td>
+                                <td>${cliente.importototale}</td>
+                            </tr>
+                            `
+                        tabella+=riga
+                    }
+                }
+                tabella+=`</table>`
+                document.getElementById("risultato").innerHTML = tabella
+            
+            }
+
+
+
+    </script>
+</html>
+
+
